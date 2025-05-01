@@ -1,4 +1,7 @@
 # Docker Compose Finder & Symlinker
+# README is a WIP!
+
+## This README does not talk about the image-updater.sh script. THIS IS A BAD README
 
 This project provides a Bash utility to locate all Docker Compose files on a system and create symlinks to them in a single, central directory for easier management and discovery. It also supports exclusion rules and automatic cleanup of stale links.
 
