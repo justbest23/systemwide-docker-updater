@@ -93,7 +93,7 @@ NO_UPDATES=0
 
 
 echo "Running the compose_finder script"
-/opt/image-updater/docker-compose-finder/compose_finder.sh
+/path/to/compose_finder.sh
 # Excluded real paths
 EXCLUDED_FILES=(
   "/opt/mediaserver/conf/backup-docker-compose.yml"
