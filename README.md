@@ -1,127 +1,116 @@
-# Docker Compose Finder & Symlinker
 # README is a WIP!
 
 ## This README does not talk about the image-updater.sh script. THIS IS A BAD README
 
-This project provides a Bash utility to locate all Docker Compose files on a system and create symlinks to them in a single, central directory for easier management and discovery. It also supports exclusion rules and automatic cleanup of stale links.
+# Systemwide Docker Updater
+
+**Systemwide Docker Updater** is a comprehensive tool that helps manage and update Docker Compose applications across an entire system. This repository provides both **Bash** and **Python** implementations to scan, centralize, and update Docker Compose configurations.
+
+## Features
+
+- 🔍 **Recursive Compose File Discovery**
+- 🔗 **Centralized Symlink Management**
+- ♻️ **Image Update Automation**
+- ⚠️ **Name Collision Handling**
+- 🚫 **Exclusion Support**
+- 🧹 **Cleanup of Broken Symlinks**
+- 🐍 **Python alternative implementation with logging and cleaner syntax**
 
 ---
 
-## 📂 Features
+## 🔧 Bash Scripts
 
-- Recursively scans common directories (`/opt`, `/etc`, `/home/troggoman`) for files matching:
-  - `*docker-compose*.yml`
-  - `*docker-compose*.yaml`
-- Automatically generates symlinks to found files in a configurable target directory.
-- Avoids name collisions by appending a short hash to duplicate filenames.
-- Supports an exclusion list to omit certain Compose files from being linked.
-- Removes symlinks that point to files that no longer exist.
+### `compose-finder.sh`
 
----
+- Recursively scans predefined directories (`/opt`, `/etc`, `/home/troggoman`) for Docker Compose files (`*docker-compose*.yml` and `*docker-compose*.yaml`).
+- Creates symlinks to found files in a centralized target directory.
+- Handles duplicate file names by appending a unique hash.
+- Allows for directory exclusions.
 
-## 📁 Directory Structure
-
+**Usage**:
+```bash
+./compose-finder.sh [target_directory]
 ```
-/opt/image-updater/
-├── compose-update.log           # Full logs
-├── docker-compose-finder        # Compose finder dir
-│   ├── compose_finder.sh        # Compose finder Script
-│   └── compose-links            # Symlink dir
-|       ├── docker-compose-3da24ece.yml -> /opt/mediaserver/conf/docker-compose.yml
-└── image-updater.sh            # Main script
+
+### `image-updater.sh`
+
+- Loops through the symlinked Compose files and updates Docker images defined within them.
+
+**Usage**:
+```bash
+./image-updater.sh
 ```
 
 ---
 
-## 🧑‍💻 Usage
+## 🐍 Python Scripts
 
-### 1. Clone the Repository
+### `compose_finder.py`
+
+- A Python equivalent of `compose-finder.sh`.
+- Scans the system for Docker Compose files and creates symlinks in a target directory.
+- Offers cleaner and more modular code using Python's standard libraries.
+
+### `image_updater.py`
+
+- Parses Docker Compose YAML files to identify services and associated images.
+- Uses the Docker CLI to check and update outdated images.
+- Handles YAML parsing and error reporting more robustly than the Bash counterpart.
+
+**Running the Python scripts**:
+```bash
+python3 compose_finder.py [target_directory]
+python3 image_updater.py
+```
+
+---
+
+## 🔁 Suggested Cronjob Setup
+
+To automate this updater, consider adding a cronjob like the following:
 
 ```bash
-git clone https://github.com/your-username/docker-compose-finder.git
-cd docker-compose-finder
+0 * * * * /path/to/compose-finder.sh /opt/docker-links
+30 * * * * /path/to/image-updater.sh
 ```
 
-### 2. Run the Script
+Or using the Python version:
 
 ```bash
-chmod +x docker-compose-finder.sh
-./docker-compose-finder.sh
+0 * * * * /usr/bin/python3 /path/to/compose_finder.py /opt/docker-links
+30 * * * * /usr/bin/python3 /path/to/image_updater.py
 ```
-
-This will:
-
-- Create `/opt/image-updater/docker-compose-finder/compose-links` if it doesn't exist.
-- Populate it with symlinks to detected Docker Compose files.
-- Remove links to any excluded or deleted files.
 
 ---
 
-## ⚙️ Configuration
+## 🧪 Testing
 
-### Directory where symlinks are stored
+Ensure you have Docker installed and Compose files available for testing.
 
-Edit this variable in the script if you want to change the output folder:
+To test the Python scripts:
 
 ```bash
-SYMLINK_DIR="/opt/image-updater/docker-compose-finder/compose-links"
+python3 compose_finder.py /tmp/test-docker-links
+python3 image_updater.py
 ```
 
-### Directories to search
-
-In `find-compose-files.sh` or directly in the script:
+To test the Bash scripts:
 
 ```bash
-directories="/opt /etc /home/troggoman"
-```
-
-### Excluded files (won’t be symlinked)
-
-```bash
-EXCLUDED_FILES=(
-  "/opt/mediaserver/conf/backup-docker-compose.yml"
-  "/opt/mediaserver/docker-compose.override.yml"
-)
+./compose-finder.sh /tmp/test-docker-links
+./image-updater.sh
 ```
 
 ---
 
-## 🧹 Housekeeping
+## 📄 License
 
-The script ensures:
+This project is licensed under the [GNU GPLv3 License](https://www.gnu.org/licenses/gpl-3.0.html).
 
-- No duplicate symlink names by appending an 8-character SHA1 hash when needed.
-- Stale or broken symlinks (pointing to deleted files) are automatically removed.
-- If a file is listed in the exclusions list and a symlink exists, the symlink will be removed.
+## 🤝 Contributing
 
----
+Contributions and improvements are welcome. Fork the repository, make your changes, and submit a pull request.
 
-## 🐧 Requirements
+## 👨‍💻 Author
 
-- Linux or WSL
-- Bash
-- Standard UNIX utilities: `find`, `sha1sum`, `readlink`, `ln`
-
----
-
-## 📝 Example Output
-
-```bash
-Creating symlink for /opt/myapp/docker-compose.yml
-Creating symlink for /etc/containers/docker-compose.production.yaml
-Removing symlink for excluded file: /opt/image-updater/docker-compose-finder/compose-links/backup-docker-compose.yml
-Removing dead symlink: /opt/image-updater/docker-compose-finder/compose-links/old-compose.yml
-Symlink folder has been updated.
-```
-
----
-
-## 📬 Contributions
-
-Pull requests and issues are welcome. If you'd like to extend functionality, improve compatibility, or suggest features, feel free to contribute.
-
----
-
-## 📜 License
-
-MIT License
+Created by [justbest23](https://github.com/justbest23)
