@@ -18,7 +18,7 @@ from typing import List, Dict, Set, Tuple, Optional, Any
 
 
 # Configuration variables
-DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1363169167137706094/9FgBx0Z6waCCGC9igELbm5VS6CAYKmlH6ITpm0nTPzNsFr1Injhvn9Lo44PRH8GIQQx_"
+DISCORD_WEBHOOK_URL = "YOUR_WEBHOOK_HERE"
 SYMLINK_DIR = "/opt/image-updater/docker-compose-finder/compose-links"
 LOG_FILE = "/opt/image-updater/compose-update.log"
 TMP_DIR = "/tmp/image-digests"
@@ -32,17 +32,17 @@ COLOUR_ERROR = 16711680       # Red
 
 # Emoji map for Discord notifications
 SERVICE_EMOJIS = {
-    "authentik": "<:authentik:1367487637308313630>",
-    "bazarr": "<:bazarr:1367487639476895804>",
-    "jellyfin": "<:jellyfin:1367492540260946060>",
-    "sonarr": "<:sonarr:1367487657004765184>",
-    "radarr": "<:radarr:1367487649211875328>",
-    "qbittorrent": "<:qbittorrent:1367487646955343922>",
-    "plex": "<:plex:1367487644543619263>",
-    "nzbget": "<:nzbget:1367487642475692123>",
-    "redis": "<:redis:1367487651338518659>",
-    "syncthing": "<:syncthing:1367487660029120612>",
-    "tautulli": "<:tautulli:1367487662344241203>",
+    "authentik": "<:authentik:emoji_id>",
+    "bazarr": "<:bazarr:emoji_id>",
+    "jellyfin": "<:jellyfin:emoji_id>",
+    "sonarr": "<:sonarr:emoji_id>",
+    "radarr": "<:radarr:emoji_id>",
+    "qbittorrent": "<:qbittorrent:emoji_id>",
+    "plex": "<:plex:emoji_id>",
+    "nzbget": "<:nzbget:emoji_id>",
+    "redis": "<:redis:emoji_id>",
+    "syncthing": "<:syncthing:emoji_id>",
+    "tautulli": "<:tautulli:emoji_id>",
 }
 
 # Excluded real paths
